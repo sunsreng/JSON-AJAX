@@ -6,8 +6,12 @@ btn.addEventListener("click", function(){
     var ourRequest = new XMLHttpRequest();
     ourRequest.open('GET','https://learnwebcode.github.io/json-example/animals-'+ pageCounter +'.json')
     ourRequest.onload = function () {
-        var ourData = JSON.parse(ourRequest.responseText);
-        renderHTML(ourData);
+        if(ourRequest.status>=200 && ourRequest.status<400){
+            var ourData = JSON.parse(ourRequest.responseText);
+            renderHTML(ourData);
+        } else {
+            console.log("We connected to the server, but it return an error.");
+        }
     };
     ourRequest.send();
     pageCounter++;
@@ -15,7 +19,9 @@ btn.addEventListener("click", function(){
         btn.classList.add("hide-me");
     }
 });
-
+// ourRequest.onerror = function() {
+//     console.log("Connection error");
+// }
 function renderHTML(data){
     var htmlString = "";
     for(i = 0; i < data.length; i++) {
